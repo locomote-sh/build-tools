@@ -1,0 +1,60 @@
+{
+    "heckle": {
+        "args": [ "source", "target" ],
+        "action": "npx heckle build {source} {target}"
+    },
+    "webpack": {
+        "comment": "Issue here is that webpack doesn't follow the source -> target pattern",
+        "action": "npx webpack"
+    },
+    "build": {
+        "args": [ "source", "target" ],
+        "actions": [
+            "heckle build {source} {target}",
+            "webpack {source} {target}"
+        ]
+    },
+    "build-from-git": {
+        "args": [ "source", "target" ],
+        "actions": [
+            "git-clone {source}",
+            "git-clone {target}",
+            "build {source} {target}",
+            "write-build-record {source} {target}",
+            "git-push {target}"
+        ]
+    },
+    "cli:build": {
+        "args": [ "source", "target" ],
+        "vars": {
+            "source": ".",
+            "target": "_site"
+        },
+        "action": "build {source} {target}"
+    },
+    "cli:deploy": {
+        "args": [ "source", "target" ],
+        "vars": {
+            "source": "master",
+            "target": "test"
+        },
+        "actions": [
+            "temp-dir workspace",
+            "build-from-git {source} {target}"
+        ]
+    },
+    "cli:release": {
+        "args": [ "source", "target" ],
+        "vars": {
+            "source": "test",
+            "target": "public"
+        },
+        "actions": [
+            "temp-dir workspace",
+            "git-clone {target}",
+            "git-merge {source}",
+            "git-push {target}"
+        ]
+    }
+}
+
