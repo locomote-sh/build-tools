@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@locomote.sh/tinytemper": "git+https://github.com/locomote-sh/tinytemper.git",
+    "express": "^4.16.4",
+    "minimist": "^1.2.0",
     "rimraf": "^2.6.3"
   },
   "scripts": {

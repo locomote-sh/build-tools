@@ -17,9 +17,9 @@
 const Express = require('express');
 const Path    = require('path');
 
-const { setupWebpack } = require('./webpack');
-const { setupHeckle }  = require('./heckle');
-const { setupFileAPI } = require('./file-api');
+const { setupWebpack } = require('../lib/server/webpack');
+const { setupHeckle }  = require('../lib/server/heckle');
+const { setupFileAPI } = require('../lib/server/file-api');
 
 /**
  * Read server properties from the build environment. Throws an error
@@ -46,7 +46,7 @@ function readServerProps( env ) {
  * used to configure the dev server to (incrementally) build content.
  */
 module.exports = {
-    "ds:webpack:" function( env, args ) {
+    "ds:webpack": function( env, args ) {
         const { config, mount } = readServerProps( env );
         const [ source, target ] = args;
         if( !source ) {
