@@ -13,15 +13,10 @@ Where:
 
         -h | --help         Print this message and exit.
         -v | --version      Print the version number and exit.
-        -b <file>           Specify a build command definition file.
-                            Definitions can be supplied as pure JSON or as
-                            node.js modules.
-                            The option can be used multiple times to specify
-                            multiple files.
         -E<name>=<value>    Specify a build enviroment name/value.
                             The option can be used multiple times to specify
                             multiple values.
-        -c <file>           Specify a configuration file. By default, the
+        --config <file>     Specify a configuration file. By default, the
                             command will attempt to load configuration from
                             a file named locomote.build-config.js
 
@@ -86,8 +81,7 @@ const argv = require('minimist')( process.argv.slice( 2 ) );
 const {
     v, version,
     h, help,
-    b, 'build-config': buildConfig,
-    c, config,
+    config,
     _: [ cname, ...args ]
 } = argv;
 
@@ -112,32 +106,32 @@ if( !cname ) {
 
 // Default configuration.
 let defaultConfig = {
-    env: {},        // Build environment.
+    env: {          // Build environment.
+        workspace: '.',
+        serverConfig: require('../lib/server/default-config'),
+    },
     commands: {}    // Additional build commands.
 };
 
 // Load default configuration if none other specified.
-if( !(c || config) ) {
+if( !config ) {
     defaultConfig = loadConfig( defaultConfig, 'locomote.build-config.js', true );
 }
 // Else load default configuration.
-else forEach( [ c, config ], file => {
-    console.log('Loading configuration from %s...', file );
-    defaultConfig = loadConfig( defaultConfig, file );
-});
+else {
+    [].concat( config )
+    .forEach( file => {
+        console.log('Loading configuration from %s...', file );
+        defaultConfig = loadConfig( defaultConfig, file );
+    });
+}
 
 // Load command definitions.
 let defs = [
     require('../conf/std-build.json'),      // Standard build commands.
-    //require('../conf/dev-server-build'),    // Additional dev server commands.
+    require('../lib/server/build-conf'),    // Dev server build commands.
     defaultConfig.commands                  // Configuration specified commands.
 ];
-
-// Load build command definitions.
-forEach( [ b, buildConfig ], file => {
-    console.log('Loading build command definitions from %s...', file );
-    defs = Object.assign( defs, require( Path.resolve( file ) ) );
-});
 
 // Extract environment assignments from the command line vars.
 const env = Object.keys( argv )
@@ -151,8 +145,8 @@ const env = Object.keys( argv )
 const { run } = require('../lib');
 
 run('cli:'+cname, env, args, defs )
-.then( () => console.log('Done') )
-.catch( e => console.error( e.message || e ) );
+    .then( () => console.log('Done') )
+    .catch( e => console.error( e.message || e ) );
 
 function printVersion() {
     const { version } = require('../package.json');
@@ -163,24 +157,6 @@ function printUsage() {
     console.log('Locomote build tools');
     printVersion();
     console.log( Usage );
-}
-
-/**
- * Iterate over multiple values and call a function for each defined value,
- * passing the value as the function call's argument. Iterates over the
- * contents of nested arrays in turn.
- */
-function forEach( values, fn ) {
-    values.forEach( value => {
-        if( Array.isArray( value ) ) {
-            // If value is an array then iterate over its values.
-            forEach( value, fn );
-        }
-        else if( value ) {
-            // If value is defined then call the function with it as argument.
-            fn( value );
-        }
-    });
 }
 
 /**

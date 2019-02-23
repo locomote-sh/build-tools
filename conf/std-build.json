@@ -26,11 +26,7 @@
     },
     "cli:serve": {
         "args": [ "source", "target" ],
-        "vars": {
-            "source": ".",
-            "target": "_site"
-        },
-        "action": "run npx locomote-serve {__args__}"
+        "action": "start-server"
     },
     "cli:build": {
         "args": [ "source", "target" ],

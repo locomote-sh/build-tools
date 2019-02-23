@@ -8,11 +8,23 @@
     "bin": "bin",
     "test": "test"
   },
+  "backup": {
+    "@locomote.sh/query-api": "git+https://github.com/locomote-sh/query-api.git",
+    "@locomote.sh/filesets": "git+https://github.com/locomote-sh/filesets.git",
+    "@locomote.sh/heckle": "git+https://github.com/locomote-sh/heckle.git"
+  },
   "dependencies": {
+    "@locomote.sh/query-api": "file:../query-api",
+    "@locomote.sh/filesets": "file:../filesets",
+    "@locomote.sh/heckle": "file:../heckle",
     "@locomote.sh/tinytemper": "git+https://github.com/locomote-sh/tinytemper.git",
     "express": "^4.16.4",
+    "express-http-proxy": "^1.4.0",
+    "indexeddbshim": "^3.10.0",
     "minimist": "^1.2.0",
-    "rimraf": "^2.6.3"
+    "rimraf": "^2.6.3",
+    "webpack": "^4.19.1",
+    "webpack-dev-middleware": "^3.3.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
