@@ -1,11 +1,11 @@
 {
     "heckle": {
         "args": [ "source", "target" ],
-        "action": "npx heckle build {source} {target}"
+        "action": "run npx heckle build {source} {target}"
     },
     "webpack": {
-        "comment": "Issue here is that webpack doesn't follow the source -> target pattern",
-        "action": "npx webpack"
+        "args": [ "source", "target" ],
+        "action": "run npx webpack --env.SOURCE={source} --env.TARGET={target}"
     },
     "build": {
         "args": [ "source", "target" ],
@@ -23,6 +23,14 @@
             "write-build-record {source} {target}",
             "git-push {target}"
         ]
+    },
+    "cli:serve": {
+        "args": [ "source", "target" ],
+        "vars": {
+            "source": ".",
+            "target": "_site"
+        },
+        "action": "run npx locomote-serve {__args__}"
     },
     "cli:build": {
         "args": [ "source", "target" ],
@@ -52,7 +60,7 @@
         "actions": [
             "temp-dir workspace",
             "git-clone {target}",
-            "git-merge {source}",
+            "git-merge {source} {target}",
             "git-push {target}"
         ]
     }

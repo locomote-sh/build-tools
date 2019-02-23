@@ -1,0 +1,67 @@
+#!/usr/bin/env node
+
+const { run } = require('../lib');
+
+const [ , , name, ...argv ] = process.argv;
+
+switch( name ) {
+
+    case '-h':
+    case '--help':
+        printUsage();
+        break;
+
+    case '-v':
+    case '--version':
+        printVersion();
+        break;
+
+    default:
+        const command = 'cli:'+name;
+        const { env, args, defs } = processArgv( argv );
+
+        run( command, env, args, defs )
+        .then( () => console.log('Done') )
+        .catch( e => console.error( e ) );
+}
+
+function printVersion() {
+    const { version } = require('../package.json');
+    console.log('Version: %s', version );
+}
+
+function printUsage() {
+    console.log('Locomote build tools');
+    printVersion();
+    console.log('Usage:');
+    console.log('');
+    console.log('   locomote-build <command> [options...] [args...]');
+}
+
+function processArgv( argv ) {
+    const env = {
+        workspace: process.cwd()
+    };
+    const args = [];
+    const defs = [];
+    let expect;
+    for( const arg of argv ) {
+        if( expect ) {
+            if( expect === 'config' ) {
+                defs.push( arg );
+            }
+            else {
+                env[expect] = arg;
+            }
+            expect = null;
+        }
+        else if( '-c' === arg ) {
+            expect = 'config';
+        }
+        else if( '-w' === arg ) {
+            expect = 'workspace';
+        }
+        else args.push( arg );
+    }
+    return { env, args, defs };
+}

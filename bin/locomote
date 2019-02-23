@@ -1,0 +1,116 @@
+#!/usr/bin/env node
+
+const Usage = `
+Usage:
+
+    locomote <command> <options...> <args...>
+
+Where:
+
+    <command> one of the supported or configured commands (see below).
+
+    <options...> is any of the following:
+
+        -h | --help     Print this message and exit.
+        -v | --version  Print the version number and exit.
+        -c <file>       Specify a command configuration file.
+
+    <args...> are positional arguments defined by the command being called.
+
+The standard build commands are:
+
+* serve: Start the development server.
+
+  The dev server will build and serve source code in the current directory.
+
+  Content is built locally and output by default to _site under the current
+  location (see 'build' command below).
+
+  Content is served from a local HTTP server which also provides Locomote's
+  query API endpoints, and by default listens on port 3000.
+
+  The server will automatically rebuild and serve content as it is modified.
+
+  See locomote-serve for full command line options.
+
+* build: Build source code in the current directory and output to _site.
+
+  The default configuration performs a Heckle static site build followed
+  by a webpack build. 
+
+  The default source and target locations can be modifed from the command line:
+
+        locomote build <source> <target>
+
+* deploy: Build the current contents of the 'master' branch and deploy the
+  result to the 'test' branch.
+
+  This command performs the same build operations as the 'build' command, but
+  works with the contents of the respective git branches rather than the
+  filesystem.
+
+  The build is done in a temporary location on the local file system and the
+  result is automatically pushed to the remote server.
+
+  The source and target branches can be modified from the command line:
+
+        locomote deploy <source> <target>
+
+* release: Merge the current contents of the 'test' branch into the 'public'
+  branch.
+
+  This command can be used to publish previously built content.
+
+  The source and target branches can be modified from the command line:
+
+        locomote release <source> <target>
+
+`;
+
+const commandDefs = [
+    require('../lib/server/build-conf'),
+    {
+        'cli:serve': async function( env, args ) {
+            const { start } = require('../lib/server');
+            await start( config, args );
+            // OR should this be specified as:
+            //  npx locomote-serve {source} {target} ?
+        }
+    }
+];
+
+const [ , , arg, ...args ] = process.argv;
+
+switch( arg ) {
+
+    case '-v':
+    case '--version':
+        printVersion();
+        break;
+
+    case '-h':
+    case '--help':
+        printUsage();
+        break;
+
+    default:
+
+        const name = 'cli:'+arg;
+        run( name, env, args, defs )
+        .then( () => console.log('Done') )
+        .catch( e => {
+            console.error( e.message );
+        });
+}
+
+function printVersion() {
+    const { version } = require('../package.json');
+    console.log('Version: %s', version );
+}
+
+function printUsage() {
+    console.log('Locomote build tools');
+    printVersion();
+    console.log( Usage );
+}
+
