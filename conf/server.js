@@ -36,5 +36,5 @@ const DefaultConfig = {
     logProxyRequests:   true
 }
 
-module.exports = { DefaultConfig };
+module.exports = DefaultConfig;
 
