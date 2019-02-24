@@ -79,10 +79,10 @@ const argv = require('minimist')( process.argv.slice( 2 ) );
 
 // Extract command line vars.
 const {
-    v, version,
-    h, help,
-    config,
-    _: [ cname, ...args ]
+    v, version,             // Print version
+    h, help,                // Print usage
+    config,                 // Specify config file(s)
+    _: [ cname, ...args ]   // Positional args.
 } = argv;
 
 // Print version?
@@ -105,6 +105,7 @@ if( !cname ) {
 }
 
 // Default configuration.
+// TODO Need to review handling and positioning of (dev) server config.
 let defaultConfig = {
     env: {          // Build environment.
         workspace: '.',
@@ -117,11 +118,11 @@ let defaultConfig = {
 
 // Load default configuration if none other specified.
 if( !config ) {
-    defaultConfig = loadConfig( defaultConfig, 'locomote.build-config.js', true );
+    defaultConfig = loadConfig( defaultConfig, 'locomote.build.js', true );
 }
-// Else load default configuration.
+// Else load user specified configuration.
 else {
-    [].concat( config )
+    [].concat( config ) // Ensure config is an array.
     .forEach( file => {
         console.log('Loading configuration from %s...', file );
         defaultConfig = loadConfig( defaultConfig, file );
@@ -136,16 +137,21 @@ let defs = [
 ];
 
 // Extract environment assignments from the command line vars.
-const env = Object.keys( argv )
-    .reduce( ( env, key ) => {
-        if( key.startsWith('-E') ) {
-            env[key.slice( 2 )] = argv[key];
-        }
-        return env;
-    }, defaultConfig.env );
+// The way minimalist lib handles args in -Ename=value format isn't in any way
+// useful to us here, so instead process the raw args directly.
+const { env } = defaultConfig;
+process.argv.forEach( arg => {
+    if( arg.startsWith('-E') ) {
+        // Environment vars can be either in name=value format, or supplied
+        // as name only in which case the var assigned 'true'.
+        const [ name, value = true ] = arg.slice( 2 ).split('=');
+        env[name] = value;
+    }
+});
 
+// Run the command; the full command name is formed by prefixing the supplied
+// name with 'cli:'.
 const { run } = require('../lib');
-
 run('cli:'+cname, env, args, defs )
     .then( () => console.log('Done') )
     .catch( e => console.error( e.message || e ) );
