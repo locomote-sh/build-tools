@@ -108,7 +108,9 @@ if( !cname ) {
 let defaultConfig = {
     env: {          // Build environment.
         workspace: '.',
-        serverConfig: require('../lib/server/default-config'),
+        server: {
+            config: require('../conf/server')
+        }
     },
     commands: {}    // Additional build commands.
 };
