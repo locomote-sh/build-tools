@@ -10,7 +10,7 @@
     "build": {
         "args": [ "source", "target" ],
         "actions": [
-            "heckle build {source} {target}",
+            "heckle {source} {target}",
             "webpack {source} {target}"
         ]
     },
