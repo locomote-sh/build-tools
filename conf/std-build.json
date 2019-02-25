@@ -1,15 +1,25 @@
 {
     "heckle": {
         "args": [ "source", "target" ],
-        "action": "exec npx heckle build {source} {target}"
+        "action": "npx heckle build {source} {target}"
     },
     "webpack": {
         "args": [ "source", "target" ],
-        "action": "exec npx webpack --env.SOURCE={source} --env.TARGET={target}"
+        "action": "npx webpack --env.SOURCE={source} --env.TARGET={target}"
+    },
+    "webapp-build": {
+        "args": [ "source", "target" ],
+        "actions": [
+            "npx make-pwa-images {source} {target}",
+            "npx make-sw {source} {target}",
+            "npx make-html-header {source} {target} -o _include/locomote-header.html",
+            "npx make-web-manifest {source} {target}"
+        ]
     },
     "build": {
         "args": [ "source", "target" ],
         "actions": [
+            "webapp-build {source} {target}",
             "heckle {source} {target}",
             "webpack {source} {target}"
         ]

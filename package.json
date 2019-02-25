@@ -1,5 +1,5 @@
 {
-  "name": "build-tools",
+  "name": "@locomote.sh/build-tools",
   "version": "0.8.0",
   "description": "Locomote.sh build tools",
   "main": "lib/index.js",
@@ -14,6 +14,7 @@
     "@locomote.sh/heckle": "git+https://github.com/locomote-sh/heckle.git"
   },
   "dependencies": {
+    "@locomote.sh/core-build-tools": "file:../core-build-tools",
     "@locomote.sh/query-api": "file:../query-api",
     "@locomote.sh/filesets": "file:../filesets",
     "@locomote.sh/heckle": "file:../heckle",
