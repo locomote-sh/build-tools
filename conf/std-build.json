@@ -34,6 +34,13 @@
             "git-push {target}"
         ]
     },
+    "cli:pwa-build": {
+        "args": [ "source" ],
+        "vars": {
+            "source": "."
+        },
+        "action": "pwa-build {source}"
+    },
     "cli:serve": {
         "args": [ "source", "target" ],
         "vars": {
@@ -43,21 +50,6 @@
         "action": "start-server {source} {target}"
     },
     "cli:build": {
-        "args": [ "source", "target" ],
-        "vars": {
-            "source": ".",
-            "target": "_site"
-        },
-        "action": "build {source} {target}"
-    },
-    "cli:pwa-build": {
-        "args": [ "source" ],
-        "vars": {
-            "source": "."
-        },
-        "action": "pwa-build {source}"
-    },
-    "cli:deploy": {
         "args": [ "origin", "source", "target" ],
         "vars": {
             "origin": ".",
@@ -67,21 +59,6 @@
         "actions": [
             "mktemp",
             "build-from-git {origin} {source} {target}",
-            "rmdir ."
-        ]
-    },
-    "cli:release": {
-        "args": [ "origin", "source", "target" ],
-        "vars": {
-            "origin": ".",
-            "source": "master",
-            "target": "test"
-        },
-        "actions": [
-            "mktemp",
-            "git-clone {origin} {target}",
-            "git-merge {source} {target}",
-            "git-push {target}",
             "rmdir ."
         ]
     }
