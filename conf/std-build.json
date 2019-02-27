@@ -5,30 +5,30 @@
     },
     "webpack": {
         "args": [ "source", "target" ],
-        "action": "npx webpack --env.SOURCE={source} --env.TARGET={target}"
+        "action": "npx webpack --config {source}/webpack.config.js --env.SOURCE={source} --env.TARGET={target}"
     },
-    "webapp-build": {
-        "args": [ "source", "target" ],
+    "pwa-build": {
+        "args": [ "source" ],
         "actions": [
-            "npx make-pwa-images {source} {target}",
-            "npx make-sw {source} {target}",
-            "npx make-html-header {source} {target} -o _include/locomote-header.html",
-            "npx make-web-manifest {source} {target}"
+            "npx make-pwa-images {source} {source}",
+            "npx make-sw {source} {source}",
+            "npx make-html-header {source} {source} -o _includes/locomote-header.html",
+            "npx make-web-manifest {source} {source}"
         ]
     },
     "build": {
         "args": [ "source", "target" ],
         "actions": [
-            "webapp-build {source} {target}",
             "heckle {source} {target}",
             "webpack {source} {target}"
         ]
     },
     "build-from-git": {
-        "args": [ "source", "target" ],
+        "args": [ "origin", "source", "target" ],
         "actions": [
-            "git-clone {source}",
-            "git-clone {target}",
+            "git-clone {origin} {source}",
+            "git-clone {origin} {target}",
+            "npm-install {source} {origin}",
             "build {source} {target}",
             "write-build-record {source} {target}",
             "git-push {target}"
@@ -50,28 +50,39 @@
         },
         "action": "build {source} {target}"
     },
-    "cli:deploy": {
-        "args": [ "source", "target" ],
+    "cli:pwa-build": {
+        "args": [ "source" ],
         "vars": {
+            "source": "."
+        },
+        "action": "pwa-build {source}"
+    },
+    "cli:deploy": {
+        "args": [ "origin", "source", "target" ],
+        "vars": {
+            "origin": ".",
             "source": "master",
             "target": "test"
         },
         "actions": [
-            "temp-dir workspace",
-            "build-from-git {source} {target}"
+            "mktemp",
+            "build-from-git {origin} {source} {target}",
+            "rmdir ."
         ]
     },
     "cli:release": {
-        "args": [ "source", "target" ],
+        "args": [ "origin", "source", "target" ],
         "vars": {
-            "source": "test",
-            "target": "public"
+            "origin": ".",
+            "source": "master",
+            "target": "test"
         },
         "actions": [
-            "temp-dir workspace",
-            "git-clone {target}",
+            "mktemp",
+            "git-clone {origin} {target}",
             "git-merge {source} {target}",
-            "git-push {target}"
+            "git-push {target}",
+            "rmdir ."
         ]
     }
 }
