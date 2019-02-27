@@ -1,6 +1,6 @@
 {
   "name": "@locomote.sh/build-tools",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Locomote.sh build tools",
   "main": "lib/index.js",
   "directories": {
@@ -9,15 +9,16 @@
     "test": "test"
   },
   "backup": {
-    "@locomote.sh/query-api": "git+https://github.com/locomote-sh/query-api.git",
-    "@locomote.sh/filesets": "git+https://github.com/locomote-sh/filesets.git",
-    "@locomote.sh/heckle": "git+https://github.com/locomote-sh/heckle.git"
-  },
-  "dependencies": {
-    "@locomote.sh/core-build-tools": "file:../core-build-tools",
+    "@locomote.sh/pwa-build-tools": "file:../pwa-build-tools",
     "@locomote.sh/query-api": "file:../query-api",
     "@locomote.sh/filesets": "file:../filesets",
-    "@locomote.sh/heckle": "file:../heckle",
+    "@locomote.sh/heckle": "file:../heckle"
+  },
+  "dependencies": {
+    "@locomote.sh/pwa-build-tools": "git+https://github.com/locomote-sh/pwa-build-tools.git",
+    "@locomote.sh/query-api": "git+https://github.com/locomote-sh/query-api.git",
+    "@locomote.sh/filesets": "git+https://github.com/locomote-sh/filesets.git",
+    "@locomote.sh/heckle": "git+https://github.com/locomote-sh/heckle.git",
     "@locomote.sh/tinytemper": "git+https://github.com/locomote-sh/tinytemper.git",
     "express": "^4.16.4",
     "express-http-proxy": "^1.4.0",
