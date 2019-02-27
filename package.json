@@ -1,6 +1,6 @@
 {
   "name": "@locomote.sh/build-tools",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "Locomote.sh build tools",
   "main": "lib/index.js",
   "directories": {
@@ -26,6 +26,7 @@
     "minimist": "^1.2.0",
     "rimraf": "^2.6.3",
     "webpack": "^4.19.1",
+    "webpack-cli": "^3.1.0",
     "webpack-dev-middleware": "^3.3.0"
   },
   "scripts": {
