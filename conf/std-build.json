@@ -1,11 +1,11 @@
 {
     "heckle": {
         "args": [ "source", "target" ],
-        "action": "npx heckle build {source} {target}"
+        "action": "npx --no-install heckle build {source} {target}"
     },
     "webpack": {
         "args": [ "source", "target" ],
-        "action": "npx webpack --config {source}/webpack.config.js --env.SOURCE={source} --env.TARGET={target}"
+        "action": "npx --no-install webpack --config {source}/webpack.config.js --env.SOURCE={source} --env.TARGET={target}"
     },
     "pwa-build": {
         "args": [ "source" ],

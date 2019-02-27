@@ -1,6 +1,6 @@
 {
   "name": "@locomote.sh/build-tools",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Locomote.sh build tools",
   "main": "lib/index.js",
   "directories": {
