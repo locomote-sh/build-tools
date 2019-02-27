@@ -5,7 +5,8 @@
     },
     "webpack": {
         "args": [ "source", "target" ],
-        "action": "npx webpack --config {source}/webpack.config.js --env.SOURCE={source} --env.TARGET={target}"
+        "action": "npx webpack --config {source}/webpack.config.js --env.SOURCE={source} --env.TARGET={target}",
+        "silentFail": true
     },
     "pwa-build": {
         "args": [ "source" ],
