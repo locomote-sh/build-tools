@@ -26,8 +26,7 @@ The build source and target locations can be optionally specified as arguments;
 they default to `.` (i.e. the current directory) and `_site` respectively.
 The development server will watch the source location and automatically rebuild the project after updates.
 * `pwa-build <source>`: Build PWA assets.
-This command will generate an assortment of different assets - app icon and splashscreen images, web manifest files etc.
-- from information in the content manifest and write them to the source location.
+This command will generate an assortment of different assets - app icon and splashscreen images, web manifest files etc. - from information in the content manifest and write them to the source location.
 The source location may be optionally specified as the command's argument;
 it defaults to `.` (i.e. the current directory).
 * `build <origin> <source> <target>`: Build a project and write the result to the content repository.
@@ -48,7 +47,7 @@ The following runtime switches and flags are available:
 
 ## Sample usage
 
-Generate PWA assets for the project in the current directory:
+Generate a project's PWA assets from its root directory:
 ```
 > npx locomote pwa-build
 ```
