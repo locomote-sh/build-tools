@@ -14,7 +14,7 @@ Allows content in a Locomote content repository to be built and served locally, 
 Where:
 
 * `[command]` is a build commands, see 'Commands' section below;
-* `<options...> are runtime options, see 'Options' section below;
+* `<options...>` are runtime options, see 'Options' section below;
 * `<args...>` is one or more arguments to the build command.
 
 ## Commands
