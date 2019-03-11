@@ -15,15 +15,16 @@
     "@locomote.sh/heckle": "file:../heckle"
   },
   "dependencies": {
-    "@locomote.sh/pwa-build-tools": "git+https://github.com/locomote-sh/pwa-build-tools.git",
-    "@locomote.sh/query-api": "git+https://github.com/locomote-sh/query-api.git",
     "@locomote.sh/filesets": "git+https://github.com/locomote-sh/filesets.git",
     "@locomote.sh/heckle": "git+https://github.com/locomote-sh/heckle.git",
+    "@locomote.sh/pwa-build-tools": "git+https://github.com/locomote-sh/pwa-build-tools.git",
+    "@locomote.sh/query-api": "git+https://github.com/locomote-sh/query-api.git",
     "@locomote.sh/tinytemper": "git+https://github.com/locomote-sh/tinytemper.git",
     "express": "^4.16.4",
     "express-http-proxy": "^1.4.0",
     "indexeddbshim": "^3.10.0",
     "minimist": "^1.2.0",
+    "opn": "^5.4.0",
     "rimraf": "^2.6.3",
     "webpack": "^4.19.1",
     "webpack-cli": "^3.1.0",
