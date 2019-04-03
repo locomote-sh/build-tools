@@ -1,6 +1,6 @@
 {
   "name": "@locomote.sh/build-tools",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "description": "Locomote.sh build tools",
   "main": "lib/index.js",
   "directories": {
@@ -22,7 +22,6 @@
     "@locomote.sh/tinytemper": "git+https://github.com/locomote-sh/tinytemper.git",
     "express": "^4.16.4",
     "express-http-proxy": "^1.4.0",
-    "indexeddbshim": "^3.10.0",
     "minimist": "^1.2.0",
     "opn": "^5.4.0",
     "rimraf": "^2.6.3",
