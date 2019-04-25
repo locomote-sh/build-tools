@@ -79,82 +79,90 @@ const argv = require('minimist')( process.argv.slice( 2 ) );
 
 const DefaultConfigFile = 'locomote.build.js';
 
-// Extract command line vars.
-const {
-    // Print version
-    v, version,
-    // Print usage
-    h, help,
-    // Specify config file(s)
-    config: configFile = DefaultConfigFile,
-    // Positional args.
-    _: [ cname, ...args ]
-} = argv;
+try {
 
-// Print version?
-if( v || version ) {
-    printVersion();
-    process.exit( 0 );
-}
+    // Extract command line vars.
+    const {
+        // Print version
+        v, version,
+        // Print usage
+        h, help,
+        // Specify config file(s)
+        config: configFile = DefaultConfigFile,
+        // Positional args.
+        _: [ cname, ...args ]
+    } = argv;
 
-// Print usage?
-if( h || help ) {
-    printUsage();
-    process.exit( 0 );
-}
-
-// Command?
-if( !cname ) {
-    console.log('Build command required');
-    printUsage();
-    process.exit( 0 );
-}
-
-// Default configuration.
-let config = {
-    env: {          // Build environment.
-        workspace: '.'
-    },
-    server: require('../lib/server/default-config'),
-    commands: {}    // Additional build commands.
-};
-
-// Load configuration file(s).
-[].concat( configFile ) // Ensure config is an array.
-.forEach( file => {
-    console.log('Loading configuration from %s...', file );
-    // NOTE that file not found won't be reported if loading from default config file.
-    config = loadConfig( config, file, file === DefaultConfigFile  );
-});
-
-// Load command definitions.
-const commandDefs = [
-    require('../conf/std-build.json'),      // Standard build commands.
-    require('../lib/server/build-conf'),    // Dev server build commands.
-    config.commands                         // Configuration specified commands.
-];
-
-// Extract environment assignments from the command line vars.
-// The way minimalist lib handles args in -Ename=value format isn't in any way
-// useful to us here, so instead process the raw args directly.
-const { env } = config;
-process.argv.forEach( arg => {
-    if( arg.startsWith('-E') ) {
-        // Environment vars can be either in name=value format, or supplied
-        // as name only in which case the var assigned 'true'.
-        const [ name, value = true ] = arg.slice( 2 ).split('=');
-        env[name] = value;
+    // Print version?
+    if( v || version ) {
+        printVersion();
+        process.exit( 0 );
     }
-});
-// Add the server configuration to the environment.
-env.server = { config: config.server };
 
-// Run the command; the full command name is formed by prefixing the supplied
-// name with 'cli:'.
-const { run } = require('../lib');
-run('cli:'+cname, env, args, commandDefs )
-    .then( () => console.log('Done') )
-    .catch( e => console.error( e.message || e ) );
+    // Print usage?
+    if( h || help ) {
+        printUsage();
+        process.exit( 0 );
+    }
+
+    // Command?
+    if( !cname ) {
+        console.log('Build command required');
+        printUsage();
+        process.exit( 0 );
+    }
+
+    // Default configuration.
+    let config = {
+        env: {          // Build environment.
+            workspace: '.'
+        },
+        server: require('../lib/server/default-config'),
+        commands: {}    // Additional build commands.
+    };
+
+    // Load configuration file(s).
+    [].concat( configFile ) // Ensure config is an array.
+    .forEach( file => {
+        console.log('Loading configuration from %s...', file );
+        // NOTE that file not found won't be reported if loading from default config file.
+        config = loadConfig( config, file, file === DefaultConfigFile  );
+    });
+
+    // Load command definitions.
+    const commandDefs = [
+        require('../conf/std-build.json'),      // Standard build commands.
+        require('../lib/server/build-conf'),    // Dev server build commands.
+        config.commands                         // Configuration specified commands.
+    ];
+
+    // Extract environment assignments from the command line vars.
+    // The way minimalist lib handles args in -Ename=value format isn't in any way
+    // useful to us here, so instead process the raw args directly.
+    const { env } = config;
+    process.argv.forEach( arg => {
+        if( arg.startsWith('-E') ) {
+            // Environment vars can be either in name=value format, or supplied
+            // as name only in which case the var assigned 'true'.
+            const [ name, value = true ] = arg.slice( 2 ).split('=');
+            env[name] = value;
+        }
+    });
+    // Add the server configuration to the environment.
+    env.server = { config: config.server };
+
+    // Run the command; the full command name is formed by prefixing the supplied
+    // name with 'cli:'.
+    const { run } = require('../lib');
+    run('cli:'+cname, env, args, commandDefs )
+        .then( () => console.log('Done') )
+        .catch( e => console.error( e.message || e ) );
+
+}
+catch( e ) {
+    console.error( e );
+    process.exit( 1 );
+}
 
 function printVersion() {
     const { version } = require('../package.json');
