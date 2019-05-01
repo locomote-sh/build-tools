@@ -1,6 +1,6 @@
 {
   "name": "@locomote.sh/build-tools",
-  "version": "0.8.6",
+  "version": "0.8.7",
   "description": "Locomote.sh build tools",
   "main": "lib/index.js",
   "directories": {
@@ -16,8 +16,6 @@
   },
   "dependencies": {
     "@locomote.sh/filesets": "git+https://github.com/locomote-sh/filesets.git",
-    "@locomote.sh/heckle": "git+https://github.com/locomote-sh/heckle.git",
-    "@locomote.sh/pwa-build-tools": "git+https://github.com/locomote-sh/pwa-build-tools.git",
     "@locomote.sh/query-api": "git+https://github.com/locomote-sh/query-api.git",
     "@locomote.sh/tinytemper": "git+https://github.com/locomote-sh/tinytemper.git",
     "express": "^4.16.4",
@@ -28,6 +26,13 @@
     "webpack": "^4.19.1",
     "webpack-cli": "^3.1.0",
     "webpack-dev-middleware": "^3.3.0"
+  },
+  "devDependencies": {
+    "@locomote.sh/heckle": "file:../heckle"
+  },
+  "peerDependencies": {
+    "@locomote.sh/heckle": "git+https://github.com/locomote-sh/heckle.git",
+    "@locomote.sh/pwa-build-tools": "git+https://github.com/locomote-sh/pwa-build-tools.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
