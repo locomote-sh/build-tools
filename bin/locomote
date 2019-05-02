@@ -81,7 +81,7 @@ const DefaultConfigFile = 'locomote.build.js';
 
 // Parse the command line.
 const klopptions = require('@locomote.sh/klopptions');
-const args = klopptions({
+const options = klopptions({
     flags: {
         // Specify config file(s).
         '-c': 'config'
@@ -103,7 +103,7 @@ const args = klopptions({
 
 try {
 
-    const { version, help } = args;
+    const { version, help } = options;
 
     // Print version?
     if( version ) {
@@ -118,7 +118,7 @@ try {
     }
 
     // Command?
-    if( !args.command ) {
+    if( !options.command ) {
         console.log('Build command required');
         printUsage();
         process.exit( 0 );
@@ -134,7 +134,7 @@ try {
     };
 
     // Load configuration file(s).
-    [].concat( args.config ) // Ensure config is an array.
+    [].concat( options.config ) // Ensure config is an array.
     .forEach( file => {
         console.log('Loading configuration from %s...', file );
         // NOTE that file not found won't be reported if loading from default config file.
@@ -146,13 +146,14 @@ try {
         // Standard build commands.
         [ require('../conf/std-build.json') ];
 
-    if( args.server ) {
+    if( options.server ) {
         // Dev server build commands.
         commandDefs.push( require('../lib/server/build-conf') );
     }
-    if( args.commands ) {
+    if( options.commands ) {
         // Command line specified command defs.
-        commandDefs.push( require( args.commands ) );
+        console.log('Loading build commands from %s...', options.commands );
+        commandDefs.push( require( options.commands ) );
     }
     if( config.commands ) {
         // Configuration specified commands.
@@ -162,18 +163,19 @@ try {
     // Extract environment assignments from the command line vars.
     // These will be presented as arguments with an E prefix.
     const { env } = config;
-    for( const name in args ) {
+    for( const name in options ) {
         if( name.startsWith('E') ) {
-            const value = args[name];
+            const value = options[name];
             env[name.substring( 0 )] = value;
         }
     }
     // Add the server configuration to the environment.
     env.server = { config: config.server };
 
-    // Read the command name; prefix with 'cli:' if it doesn't already have
+    // Read the command name and arguments.
     // a namespace prefix.
-    let { command } = args;
+    let { command, args } = options;
+    // Prefix the command name with 'cli:' if it doesn't already have
     if( command.indexOf(':') < 0 ) {
         command = 'cli:'+command;
     }
@@ -182,7 +184,10 @@ try {
     const { run } = require('../lib');
     run( command, env, args, commandDefs )
         .then( () => console.log('Done') )
-        .catch( e => console.error( e.message || e ) );
+        .catch( e => {
+            console.error( e.message || e );
+            process.exit( 1 );
+        });
 
 }
 catch( e ) {

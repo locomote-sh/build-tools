@@ -28,7 +28,8 @@
     "webpack-dev-middleware": "^3.3.0"
   },
   "devDependencies": {
-    "@locomote.sh/heckle": "file:../heckle"
+    "@locomote.sh/heckle": "file:../heckle",
+    "@locomote.sh/dropbox-gateway": "file:../dropbox-gateway"
   },
   "peerDependencies": {
     "@locomote.sh/heckle": "git+https://github.com/locomote-sh/heckle.git",
