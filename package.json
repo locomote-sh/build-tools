@@ -8,12 +8,6 @@
     "bin": "bin",
     "test": "test"
   },
-  "backup": {
-    "@locomote.sh/pwa-build-tools": "file:../pwa-build-tools",
-    "@locomote.sh/query-api": "file:../query-api",
-    "@locomote.sh/filesets": "file:../filesets",
-    "@locomote.sh/heckle": "file:../heckle"
-  },
   "dependencies": {
     "@locomote.sh/filesets": "git+https://github.com/locomote-sh/filesets.git",
     "@locomote.sh/query-api": "git+https://github.com/locomote-sh/query-api.git",
