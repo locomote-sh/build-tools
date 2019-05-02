@@ -183,15 +183,11 @@ try {
     // Run the command.
     const { run } = require('../lib');
     run( command, env, args, commandDefs )
-        .then( () => console.log('Done') )
-        .catch( e => {
-            console.error( e.message || e );
-            process.exit( 1 );
-        });
+        .then( () => console.log('Done') );
 
 }
 catch( e ) {
-    console.error( e );
+    console.error( e.message || e );
     process.exit( 1 );
 }
 
