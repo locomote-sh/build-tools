@@ -174,7 +174,7 @@ try {
 
     // Read the command name and arguments.
     // a namespace prefix.
-    let { command, args } = options;
+    let { command, args = [] } = options;
     // Prefix the command name with 'cli:' if it doesn't already have
     if( command.indexOf(':') < 0 ) {
         command = 'cli:'+command;
